@@ -12,15 +12,22 @@ import java.util.*;
 
 public class HashCode {
 
-    private static final String problemName = "file_name";
-    private static final String srcDir = "./";
+    private static final String problemName = "a_example";
+    private static final String srcDir = "./input/";
 
-    private static final Path inputFilePath = Paths.get(srcDir + problemName + ".in");
-    private static final Path outputFilePath = Paths.get(srcDir + problemName + ".out");
+    private static final Path inputFilePath = Paths.get(srcDir + problemName + ".txt");
+    private static final Path outputFilePath = Paths.get(srcDir + problemName + ".txt");
+
+    //the number of different books
+    int B;
+    //numbers of libraries
+    int L;
+    //the number of days
+    int D;
+    Map<Integer, Library> libraries = new HashMap<>();
+    Map<Integer, Book> books = new HashMap<>();
 
     public static void main(String[] args) {
-
-
         Instant start = Instant.now();
 
         HashCode solution = new HashCode();
@@ -33,19 +40,16 @@ public class HashCode {
 
     public void solveProblem() {
 
-        Input input = readInputFile();
+        readInputFile();
         Set<Integer> result = new HashSet<Integer>();
 
         System.out.println(Arrays.toString(result.toArray()));
 
-        writeResultToFile(result);
+        //writeResultToFile(result);
 
     }
 
     public Map<Library, List<Book>> solveBetter() {
-        Map<Integer, Library> libraries = new HashMap<>();
-        Map<Integer, Book> books = new HashMap<>();
-        int D = 120;
         int day = 0;
         Map<Library, List<Book>> solution = new LinkedHashMap<>();
         while (day < D) {
@@ -81,15 +85,44 @@ public class HashCode {
         return solution;
     }
 
-    private Input readInputFile() {
+    private void readInputFile() {
         try (BufferedReader reader = Files.newBufferedReader(inputFilePath, StandardCharsets.UTF_8)) {
-            Input input = new Input();
             String[] firstLine = reader.readLine().split(" ");
-            return input;
+            B = Integer.parseInt(firstLine[0]);
+            L = Integer.parseInt(firstLine[1]);
+            D = Integer.parseInt(firstLine[2]);
+
+            String[] booksScore = reader.readLine().split(" ");
+
+            for (int i = 0; i < B; i++) {
+                Book book = new Book();
+                book.id = i;
+                book.score = Integer.parseInt(booksScore[i]);
+                books.put(i, book);
+            }
+
+            for (int j = 0; j < L; j++) {
+                String[] libraryInfo = reader.readLine().split(" ");
+                Library library = new Library();
+                library.id = j;
+                library.booksNumber = Integer.parseInt(libraryInfo[0]);
+                library.delay = Integer.parseInt(libraryInfo[1]);
+                library.speed = Integer.parseInt(libraryInfo[2]);
+
+                String[] libraryBooks = reader.readLine().split(" ");
+                Map<Integer, Book> libraryBooksMap = new HashMap();
+                for (int k = 0; k < library.booksNumber; k++) {
+                    int bookId = Integer.parseInt(libraryBooks[k]);
+                    Book libraryBook = books.get(bookId);
+                    libraryBook.libraries.put(k, library);
+                    libraryBooksMap.put(bookId, libraryBook);
+                }
+                library.books = libraryBooksMap;
+                libraries.put(j, library);
+            }
 
         } catch (Exception e) {
             e.printStackTrace();
-            return null;
         }
     }
 
@@ -120,6 +153,7 @@ public class HashCode {
 
         public int id;
         public int delay;
+        public int booksNumber;
         public int speed;
         public Map<Integer, Book> books = new HashMap<>();
 
@@ -131,10 +165,6 @@ public class HashCode {
             allBooks.sort(Comparator.comparingInt(b -> -b.score));
             return allBooks.subList(0, pullDays*speed);
         }
-
-    }
-
-    private class Input {
 
     }
 }
