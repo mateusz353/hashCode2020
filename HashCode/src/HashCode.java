@@ -1,3 +1,5 @@
+package src;
+
 import java.io.BufferedReader;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -47,11 +49,8 @@ public class HashCode {
     }
 
     public void solveProblem() {
-
         readInputFile();
-        LinkedHashMap<Library, List<Book>> libraryListLinkedHashMap = solveBetter();
-        writeResultToFile(libraryListLinkedHashMap);
-
+        writeResultToFile(solveBetter());
     }
 
     public LinkedHashMap<Library, List<Book>> solveBetter() {
@@ -66,7 +65,7 @@ public class HashCode {
                     continue;
 
                 List<Book> bestCurrentBooks = lib.stupidBestBooksToLoad(day, D);
-                int currentScore = countScore(bestBooks);
+                int currentScore = countScore(bestCurrentBooks);
                 if (best == null || bestScore < currentScore) {
                     best = lib;
                     bestScore = currentScore;
@@ -164,7 +163,8 @@ public class HashCode {
             List<Book> allBooks = new ArrayList<>();
             allBooks.addAll(books.values());
             allBooks.sort(Comparator.comparingInt(b -> -b.score));
-            return allBooks.subList(0, pullDays * speed);
+            int numberOfBooks = pullDays * speed;
+            return numberOfBooks > allBooks.size() ? allBooks :  allBooks.subList(0, pullDays * speed);
         }
 
     }
