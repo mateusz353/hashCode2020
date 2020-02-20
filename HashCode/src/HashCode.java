@@ -42,7 +42,7 @@ public class HashCode {
 
     }
 
-    public void solveBetter() {
+    public Map<Library, List<Book>> solveBetter() {
         Map<Integer, Library> libraries = new HashMap<>();
         Map<Integer, Book> books = new HashMap<>();
         int D = 120;
@@ -53,6 +53,9 @@ public class HashCode {
             int bestScore = -1;
             List<Book> bestBooks = null;
             for (Library lib : libraries.values()) {
+                if (day + lib.delay >= D)
+                    continue;
+
                 List<Book> bestCurrentBooks = lib.stupidBestBooksToLoad(day, D);
                 int currentScore = countScore(bestBooks);
                 if (best == null || bestScore < currentScore) {
@@ -62,6 +65,9 @@ public class HashCode {
                 }
             }
 
+            if (best == null)
+                return solution;
+
             solution.put(best, bestBooks);
             for (Book book : bestBooks) {
                 for (Library library : book.libraries.values()) {
@@ -69,8 +75,10 @@ public class HashCode {
                 }
             }
             libraries.remove(best.id);
-            day -= best.delay;
+            day += best.delay;
         }
+
+        return solution;
     }
 
     private Input readInputFile() {
