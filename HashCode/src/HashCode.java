@@ -68,6 +68,19 @@ public class HashCode {
         public int speed;
         public Map<Integer, Book> books = new HashMap<>();
 
+        public int countMaximalScore(int signupDay, int dDay) {
+            int pullDays = dDay - (signupDay + delay);
+            List<Book> booksToLoad = stupidBestBooksToLoad(pullDays);
+            return booksToLoad.stream().mapToInt(b -> b.score).sum();
+        }
+
+        public List<Book> stupidBestBooksToLoad(int daysToLoad) {
+            List<Book> allBooks = new ArrayList<>();
+            allBooks.addAll(books.values());
+            allBooks.sort(Comparator.comparingInt(b -> -b.score));
+            return allBooks.subList(0, daysToLoad*speed);
+        }
+
     }
 
     private class Input {
