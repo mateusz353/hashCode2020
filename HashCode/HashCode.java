@@ -19,6 +19,9 @@ public class HashCode {
     private static final Path outputFilePath = Paths.get(srcDir + problemName + ".out");
 
     public static void main(String[] args) {
+        Map<Integer, Library> libraries = new HashMap<>();
+        Map<Integer, Book> books = new HashMap<>();
+
         Instant start = Instant.now();
 
         HashCode solution = new HashCode();
@@ -51,6 +54,22 @@ public class HashCode {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private static class Book {
+        public int id;
+        public int score;
+        public Map<Integer, Library> libraries = new HashMap<>();
+
+    }
+
+    private static class Library {
+
+        public int id;
+        public int delay;
+        public int speed;
+        public List<Integer, Book> books = new HashMap<>();
+
     }
 
     private class Input {
