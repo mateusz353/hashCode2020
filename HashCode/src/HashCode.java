@@ -7,6 +7,7 @@ import java.nio.file.Paths;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.*;
+import java.util.stream.Collectors;
 
 // Discret Backpack Problem - simple Dynamic programming (top-down)
 
@@ -42,12 +43,12 @@ public class HashCode {
 
     }
 
-    public Map<Library, List<Book>> solveBetter() {
+    public LinkedHashMap<Library, List<Book>> solveBetter() {
         Map<Integer, Library> libraries = new HashMap<>();
         Map<Integer, Book> books = new HashMap<>();
         int D = 120;
         int day = 0;
-        Map<Library, List<Book>> solution = new LinkedHashMap<>();
+        LinkedHashMap<Library, List<Book>> solution = new LinkedHashMap<>();
         while (day < D) {
             Library best = null;
             int bestScore = -1;
@@ -93,15 +94,11 @@ public class HashCode {
         }
     }
 
-    private void writeResultToFile(Set<Integer> result) {
-        StringBuilder outputFileBuilder = new StringBuilder();
-        outputFileBuilder.append(result.size() + "\n");
-        result.stream().forEach(item -> outputFileBuilder.append(item + " "));
-
-        try (BufferedWriter writer = Files.newBufferedWriter(outputFilePath)) {
-            writer.write(outputFileBuilder.toString());
-        } catch (Exception e) {
-            e.printStackTrace();
+    private void writeResultToFile( LinkedHashMap<Library, List<Book>> result) {
+        System.out.println(result.keySet().size());
+        for (Map.Entry<Library, List<Book>> entry : result.entrySet()) {
+            System.out.println(entry.getKey().id + " " + entry.getValue().size());
+            System.out.println(entry.getValue().stream().map(b -> String.valueOf(b.id)).collect(Collectors.joining(" ")));
         }
     }
 
