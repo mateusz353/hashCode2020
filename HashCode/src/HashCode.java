@@ -19,8 +19,7 @@ public class HashCode {
     private static final Path outputFilePath = Paths.get(srcDir + problemName + ".out");
 
     public static void main(String[] args) {
-        Map<Integer, Library> libraries = new HashMap<>();
-        Map<Integer, Book> books = new HashMap<>();
+
 
         Instant start = Instant.now();
 
@@ -41,6 +40,37 @@ public class HashCode {
 
         writeResultToFile(result);
 
+    }
+
+    public void solveBetter() {
+        Map<Integer, Library> libraries = new HashMap<>();
+        Map<Integer, Book> books = new HashMap<>();
+        int D = 120;
+        int day = 0;
+        Map<Library, List<Book>> solution = new LinkedHashMap<>();
+        while (day < D) {
+            Library best = null;
+            int bestScore = -1;
+            List<Book> bestBooks = null;
+            for (Library lib : libraries.values()) {
+                List<Book> bestCurrentBooks = lib.stupidBestBooksToLoad(day, D);
+                int currentScore = countScore(bestBooks);
+                if (best == null || bestScore < currentScore) {
+                    best = lib;
+                    bestScore = currentScore;
+                    bestBooks = bestCurrentBooks;
+                }
+            }
+
+            solution.put(best, bestBooks);
+            for (Book book : bestBooks) {
+                for (Library library : book.libraries.values()) {
+                    library.books.remove(book.id);
+                }
+            }
+            libraries.remove(best.id);
+            day -= best.delay;
+        }
     }
 
     private Input readInputFile() {
