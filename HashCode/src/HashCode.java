@@ -66,7 +66,7 @@ public class HashCode {
         public int id;
         public int delay;
         public int speed;
-        public List<Integer, Book> books = new HashMap<>();
+        public Map<Integer, Book> books = new HashMap<>();
 
     }
 
