@@ -49,11 +49,8 @@ public class HashCode {
     public void solveProblem() {
 
         readInputFile();
-        Set<Integer> result = new HashSet<Integer>();
-
-        System.out.println(Arrays.toString(result.toArray()));
-
-        //writeResultToFile(result);
+        LinkedHashMap<Library, List<Book>> libraryListLinkedHashMap = solveBetter();
+        writeResultToFile(libraryListLinkedHashMap);
 
     }
 
