@@ -7,22 +7,14 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.Duration;
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 // Discret Backpack Problem - simple Dynamic programming (top-down)
 
 public class HashCode {
 
-    private static final String problemName = "a_example";
+    private static final String problemName = "d_tough_choices";
     private static final String srcDir = "./input/";
 
     private static final Path inputFilePath = Paths.get(srcDir + problemName + ".txt");
@@ -138,16 +130,16 @@ public class HashCode {
         }
     }
 
+    public int countScore(List<Book> books) {
+        return books.stream().mapToInt(b -> b.score).sum();
+    }
+
     private static class Book {
 
         public int id;
         public int score;
         public Map<Integer, Library> libraries = new HashMap<>();
 
-    }
-
-    public int countScore(List<Book> books) {
-        return books.stream().mapToInt(b -> b.score).sum();
     }
 
     private static class Library {
@@ -163,8 +155,8 @@ public class HashCode {
             List<Book> allBooks = new ArrayList<>();
             allBooks.addAll(books.values());
             allBooks.sort(Comparator.comparingInt(b -> -b.score));
-            int numberOfBooks = pullDays * speed;
-            return numberOfBooks > allBooks.size() ? allBooks :  allBooks.subList(0, pullDays * speed);
+            long numberOfBooks = (long) pullDays * (long) speed;
+            return numberOfBooks > allBooks.size() ? allBooks : allBooks.subList(0, pullDays * speed);
         }
 
     }
