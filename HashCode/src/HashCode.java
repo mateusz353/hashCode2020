@@ -1,4 +1,6 @@
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -33,13 +35,24 @@ public class HashCode {
     public void solveProblem() {
 
         Input input = readInputFile();
-        input.print();
         Set<Integer> result = new HashSet<Integer>();
 
         System.out.println(Arrays.toString(result.toArray()));
 
         writeResultToFile(result);
 
+    }
+
+    private Input readInputFile() {
+        try (BufferedReader reader = Files.newBufferedReader(inputFilePath, StandardCharsets.UTF_8)) {
+            Input input = new Input();
+            String[] firstLine = reader.readLine().split(" ");
+            return input;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     private void writeResultToFile(Set<Integer> result) {
@@ -85,36 +98,5 @@ public class HashCode {
 
     private class Input {
 
-        private int maxWeight;
-        private int numberOfElements;
-        private int[] weights;
-
-        public int getMaxWeight() {
-            return maxWeight;
-        }
-
-        public void setMaxWeight(int maxWeight) {
-            this.maxWeight = maxWeight;
-        }
-
-        public int getNumberOfElements() {
-            return numberOfElements;
-        }
-
-        public void setNumberOfElements(int numberOfElements) {
-            this.numberOfElements = numberOfElements;
-        }
-
-        public int[] getWeights() {
-            return weights;
-        }
-
-        public void setWeights(int[] weights) {
-            this.weights = weights;
-        }
-
-        public void print() {
-            System.out.println("maxWeight = " + maxWeight + "\nnumberOfElements = " + numberOfElements + "\nweights = " + Arrays.toString(weights) + "\n");
-        }
     }
 }
