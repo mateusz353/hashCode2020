@@ -74,6 +74,10 @@ public class HashCode {
 
     }
 
+    public int countScore(List<Book> books) {
+        return books.stream().mapToInt(b -> b.score).sum();
+    }
+
     private static class Library {
 
         public int id;
@@ -81,17 +85,13 @@ public class HashCode {
         public int speed;
         public Map<Integer, Book> books = new HashMap<>();
 
-        public int countMaximalScore(int signupDay, int dDay) {
-            int pullDays = dDay - (signupDay + delay);
-            List<Book> booksToLoad = stupidBestBooksToLoad(pullDays);
-            return booksToLoad.stream().mapToInt(b -> b.score).sum();
-        }
 
-        public List<Book> stupidBestBooksToLoad(int daysToLoad) {
+        public List<Book> stupidBestBooksToLoad(int signupDay, int dDay) {
+            int pullDays = dDay - (signupDay + delay);
             List<Book> allBooks = new ArrayList<>();
             allBooks.addAll(books.values());
             allBooks.sort(Comparator.comparingInt(b -> -b.score));
-            return allBooks.subList(0, daysToLoad*speed);
+            return allBooks.subList(0, pullDays*speed);
         }
 
     }
