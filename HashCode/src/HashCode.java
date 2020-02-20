@@ -4,9 +4,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.Duration;
 import java.time.Instant;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 // Discret Backpack Problem - simple Dynamic programming (top-down)
 
@@ -19,6 +17,9 @@ public class HashCode {
     private static final Path outputFilePath = Paths.get(srcDir + problemName + ".out");
 
     public static void main(String[] args) {
+        Map<Integer, Library> libraries = new HashMap<>();
+        Map<Integer, Book> books = new HashMap<>();
+
         Instant start = Instant.now();
 
         HashCode solution = new HashCode();
@@ -51,6 +52,22 @@ public class HashCode {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private static class Book {
+        public int id;
+        public int score;
+        public Map<Integer, Library> libraries = new HashMap<>();
+
+    }
+
+    private static class Library {
+
+        public int id;
+        public int delay;
+        public int speed;
+        public Map<Integer, Book> books = new HashMap<>();
+
     }
 
     private class Input {
